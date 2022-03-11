@@ -1,0 +1,3 @@
+!#/bin/bash
+echo Starting server ... 
+x-terminal-emulator --command="node src/index.js"

@@ -4,12 +4,12 @@
   "description": "A boilerplate express/.net server with built in updating functionality.",
   "main": "index.js",
   "scripts": {
-    "start":"node src/index.js",
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DR-HOMEAUTOMATION/generic-updatable-server.git"
+    "url": "https://github.com/DR-HOMEAUTOMATION/generic-updatable-server.git"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/DR-HOMEAUTOMATION/generic-updatable-server#readme",
   "dependencies": {
-    "auto-git-update": "^1.1.0"
+    "auto-git-update": "^1.1.0",
+    "mic": "^2.1.2"
   }
 }

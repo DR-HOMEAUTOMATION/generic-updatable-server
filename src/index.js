@@ -1,5 +1,6 @@
 const config = require('../config')
 
+// Servers array expects objects in this format {net.Server,net.Socket[]}
 const servers = [] 
 servers.push(require('./servers/app'))
 servers.push(require('./servers/stream'))
@@ -20,6 +21,9 @@ servers.forEach((s) => {
     s.server.on('exit',()=>{
         console.log('closing server')
         Updater.forceShutdown();
+    })
+    s.server.on('log',(data)=>{
+        console.log('\x1b[31m',`Global Log: ${data} \n An error has occurred in: ${s.server}`,'\x1b[0m')
     })
 })
 
