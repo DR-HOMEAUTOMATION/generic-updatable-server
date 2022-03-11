@@ -17,5 +17,9 @@ servers.forEach((s) => {
         console.log('update in progress')
         Updater.forceUpdate();
     })
+    s.server.on('exit',()=>{
+        console.log('closing server')
+        Updater.forceShutdown();
+    })
 })
 

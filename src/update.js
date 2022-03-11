@@ -31,15 +31,30 @@ class Updater {
     * wait for all servers to shutdown then updates the application without checking for new version
     */
     forceUpdate(){
-        const shutdownServers = this.activeServers.map((s)=>{
-            const {server,sockets} = s;
-            return this.shutdownServer(server,sockets)
-        })
-        Promise.all(shutdownServers) // resolve all closures then update and shutdown 
+        console.log(this.activeServers)
+        Promise.all(this.closeActiveServers()) // resolve all closures then update and shutdown 
             .then(()=>{
                 console.log('all servers closed!')
                 this.AutoGitUpdater.forceUpdate(); 
             })
+    }
+
+    /** 
+    * Wait for all sockets to close then shut down the program 
+    */
+    forceShutdown(){
+        Promise.all(this.closeActiveServers())
+            .then(()=>{
+                console.log('all servers closed!')
+                process.exit(0); 
+            })
+    }
+
+    closeActiveServers(){
+        return this.activeServers.map((s)=>{
+            const {server,sockets} = s;
+            return this.shutdownServer(server,sockets)
+        })
     }
 
     /** 
