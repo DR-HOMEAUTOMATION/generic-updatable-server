@@ -6,7 +6,7 @@ const config = require('../../config')
 
 const express = require('express'); 
 const app = express(); 
-
+//const app = {}
 const server = app.listen(config.server_config.ports.app.port,()=>{
     console.log(`listening on http://localhost:${config.server_config.ports.app.port}`)
 })

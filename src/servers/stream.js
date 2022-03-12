@@ -51,6 +51,7 @@ const writeAll = (data) =>{
 * When the silece event is emitted from  the mic, close the file and stop streaming.  
 */
 micInput.on('silence',()=>{
+    console.log('silence');
     isStreaming = false
     writeAll('endFile')
 })
@@ -72,6 +73,14 @@ micInput.on('data',(data)=>{
 		console.log('saving header'); 
 		header = data;
 		micInstance.pause();
+	}
+	if(micInput.getConsecSilenceCount() === 0){
+		if(!isStreaming){
+			writeAll('startFile')
+			writeAll(header)
+		}
+		isStreaming = true
+		quietFrame = 0
 	}
 	if(isStreaming){
 		writeAll(data); 
@@ -113,4 +122,5 @@ micInstance.start()
     console.log('\x1b[31m',`${e} \n an error has occurred in: stream.js `,'\x1b[0m')
     audioServer.emit('exit')
 }
-module.exports = {audioServer,sockets}; 
+
+module.exports = {server:audioServer,sockets}; 
