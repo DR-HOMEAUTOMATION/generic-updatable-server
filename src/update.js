@@ -17,7 +17,7 @@ class Updater {
      */
     constructor(activeServers,gitConfig){
         if(!gitConfig) throw new Error('\x1b[31m you must pass in a config object for AutoGitUpdate \x1b[0m')
-        if(!gitConfig.repository || !gitConfig.backup_path || !gitConfig.start_script_cmd) throw new Error('The gitConfig must contain (at least) : repo,backup_path,start_script_path')
+        if(!gitConfig.repository || !gitConfig.backup_path || !gitConfig.start_script_cmd) throw new Error('\x1b The gitConfig must contain (at least) : repo,backup_path,start_script_cmd \x1b[0m')
         this.activeServers = activeServers;
         this.initGitUpdater({...gitConfig,tempLocation:gitConfig.backup_path,executeOnComplete:gitConfig.start_script_cmd}); 
     }

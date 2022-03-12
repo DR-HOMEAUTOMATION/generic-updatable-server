@@ -4,8 +4,8 @@ const config = {
         repository: packageJson.repository.url ,
         formReleases:false,
         branch:'raspi-audio-server',
-        tempLocation:'/home/pi/backups/SHAS',
-        executeOnComplete:`sh start.sh`,
+        backup_path:'/home/pi/backups/SHAS',
+        start_script_cmd:`sh start.sh`,
         exitOnComplete:true
     },
     server_config:{
