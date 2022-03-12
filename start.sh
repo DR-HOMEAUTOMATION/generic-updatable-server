@@ -1,3 +1,3 @@
 !#/bin/bash
 echo Starting server ... 
-x-terminal-emulator --command="node src/index.js"
+x-terminal-emulator --command="npm install; node src/index.js"
