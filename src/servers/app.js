@@ -6,6 +6,7 @@ const config = require('../../config')
 
 const express = require('express'); 
 const app = express(); 
+const ImageServer = require('./ImageServer')
 
 const server = app.listen(config.server_config.ports.app.port,()=>{
     console.log(`listening on http://localhost:${config.server_config.ports.app.port}`)
@@ -14,6 +15,8 @@ const server = app.listen(config.server_config.ports.app.port,()=>{
 app.get('/',(req,res)=>{
     res.json(config.server_config.routes)
 })
+
+app.get('/image',ImageServer)
 
 /** 
 * @fires app#update 

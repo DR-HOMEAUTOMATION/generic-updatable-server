@@ -1,9 +1,16 @@
 const config = {
     "auto_git_updater_config":{
         "repository":"https://github.com/DR-HOMEAUTOMATION/generic-updatable-server.git",
-        "backup_path":"C:/backups/test",
-        "start_script_cmd":"start start.bat",
-        "branch":"main"
+        "backup_path":"/home/pi/backups/SHIS",
+        "start_script_cmd":"sh start.sh",
+        "branch":"raspi-image-server"
+    },
+    jpeg_cam_config:{
+        "--width":480,
+        "--height":480,
+        "-o":"public/captured_image.jpg",
+        "-t":20,
+        "-n":'',
     },
     "server_config":{
         "routes":[
@@ -18,18 +25,17 @@ const config = {
             {
                 "path":"/update",
                 "description":"Updates and restarts the server."
+            },
+            {
+                "path":"/image",
+                "description":"Captures and streams an image from the raspberry pi camera."
             }
         ],
-        "ports":{
+        "ports":{ // image server served on port 5001
            "app": {
-                "port":5000,
+                "port":5001,
                 "type":"http",
                 "content":"main"
-            },
-           "stream": {
-                "port":3000,
-                "type":"socket",
-                "content":"a stream of some sort (maybe audio/video stream)"
             }
         }
     }

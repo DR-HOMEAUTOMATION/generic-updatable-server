@@ -2,7 +2,6 @@ const config = require('../config')
 
 const servers = [] 
 servers.push(require('./servers/app'))
-servers.push(require('./servers/stream'))
 
 /** 
 * import AutoUpdater 
