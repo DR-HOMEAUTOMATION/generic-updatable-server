@@ -10,7 +10,6 @@ const successImageCapture = (res,code) =>{
 }
 
 const failedImageCapture = (res,err) =>{
-    res.json('An error has occurred while taking a new Image')
     console.log(err)
 }
 
