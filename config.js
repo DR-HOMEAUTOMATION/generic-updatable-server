@@ -11,7 +11,7 @@ const config = {
         formReleases:false,
         branch:'raspi-audio-server',
         backup_path:'/home/pi/backups/SHAS',
-        start_script_cmd:`npm install express; sh start.sh`,
+        start_script_cmd:`sh start.sh`,
         exitOnComplete:true
     },
     server_config:{
