@@ -18,12 +18,14 @@ servers.forEach((s) => {
         console.log('update in progress')
         Updater.forceUpdate();
     })
+
     s.server.on('exit',()=>{
         console.log('closing server')
         Updater.forceShutdown();
     })
+
     s.server.on('log',(data)=>{
-        console.log('\x1b[31m',`Global Log: ${data} \n An error has occurred in: ${s.server}`,'\x1b[0m')
+        console.log('\x1b[31m',`Global Log: ${data} \n An error has occurred in server: ${JSON.stringify(s.server,null,4)}`,'\x1b[0m')
     })
 })
 

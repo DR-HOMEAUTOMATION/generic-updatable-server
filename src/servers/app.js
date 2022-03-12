@@ -30,9 +30,13 @@ app.get('/update',(req,res)=>{
 */
 app.get('/exit',(req,res)=>{
     res.json('closing server now');
-    res.end()
     server.emit('exit')
     server.emit('close')
+})
+
+app.get('/log',(req,res)=>{
+    res.json('Testing Global log functionality')
+    server.emit('log','Testing Global log functionality')
 })
 /** 
 * exports an object containing the server and an array containing open all sockets

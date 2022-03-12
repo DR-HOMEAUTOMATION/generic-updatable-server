@@ -1,3 +1,9 @@
+const os = require( 'os' );
+const networkInterfaces = os.networkInterfaces();
+const arr = networkInterfaces.wlan0
+const myIp = arr.find(ip=>ip.family==="IPv4").address
+
+
 const packageJson = require('./package.json')
 const config = {
     auto_git_updater_config:{
@@ -39,7 +45,7 @@ const config = {
             },
            stream: {
                 port:3000,
-                host:"10.0.0.186",
+                host:myIp,
                 type:"socket",
                 content:"Listen to the microphone attached to the server"
             }

@@ -56,17 +56,6 @@ micInput.on('silence',()=>{
     writeAll('endFile')
 })
 
-micInput.on('speech',()=>{
-	// start piping the mic data
-	if(!isStreaming) {
-		writeAll('startFile');
-		writeAll(header); 
-	} 
-	isStreaming = true;
-	quietFrame = 0; 
-})
-
-
 micInput.on('data',(data)=>{
 	if(dataCount === 0){
 		dataCount++; 
@@ -78,12 +67,11 @@ micInput.on('data',(data)=>{
 		if(!isStreaming){
 			writeAll('startFile')
 			writeAll(header)
+		}else{
+			writeAll(data); 
 		}
 		isStreaming = true
 		quietFrame = 0
-	}
-	if(isStreaming){
-		writeAll(data); 
 	}
 })
 
@@ -97,30 +85,30 @@ audioServer.listen(port,host,()=>{
 })
 
 audioServer.on('close',()=>{
-    micInstance.stop(); 
+	micInstance.stop(); 
 })
 
 audioServer.on('connection',(socket)=>{
-    micInstance.resume();
+	micInstance.resume();
 	sockets.push(socket);
 	let clientAddress = `${socket.remoteAddress}:${socket.remotePort}`
 	console.log(`a new user connected: ${clientAddress}`)
 	socket.write('startFile');  
 	socket.write(header);
-
+	
 	socket.on('close',(data)=>{
 		removeSocket(clientAddress); 
 	})
 	
 	socket.on('error',(err)=>{
-        console.log('\x1b[31m',`An error has occurred at : ${socket}`,'\x1b[0m')
+		console.log('\x1b[31m',`An error has occurred at : ${socket}`,'\x1b[0m')
     })
-	
 })
 micInstance.start()
 }catch(e){ // send logs to external server and exit
     console.log('\x1b[31m',`${e} \n an error has occurred in: stream.js `,'\x1b[0m')
-    audioServer.emit('exit')
+    audioServer.emit('log',e)
+	audioServer.emit('exit')
 }
 
 module.exports = {server:audioServer,sockets}; 
