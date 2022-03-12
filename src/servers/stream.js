@@ -64,14 +64,14 @@ micInput.on('data',(data)=>{
 		micInstance.pause();
 	}
 	if(micInput.getConsecSilenceCount() === 0){
-		if(!isStreaming){
-			writeAll('startFile')
-			writeAll(header)
-		}else{
-			writeAll(data); 
-		}
 		isStreaming = true
 		quietFrame = 0
+	}
+	if(!isStreaming){
+		writeAll('startFile')
+		writeAll(header)
+	}else{
+		writeAll(data); 
 	}
 })
 
