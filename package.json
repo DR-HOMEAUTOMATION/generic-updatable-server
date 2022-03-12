@@ -1,6 +1,6 @@
 {
   "name": "generic-updatable-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A boilerplate express/.net server with built in updating functionality.",
   "main": "index.js",
   "scripts": {
