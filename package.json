@@ -20,6 +20,7 @@
   "homepage": "https://github.com/DR-HOMEAUTOMATION/generic-updatable-server#readme",
   "dependencies": {
     "auto-git-update": "^1.1.0",
-    "mic": "^2.1.2"
+    "mic": "^2.1.2",
+    "express":"^4.17.3"
   }
 }
