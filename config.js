@@ -28,7 +28,7 @@ const config = {
             },
             {
                 "path":"/image",
-                "description":"Captures and streams an image from the raspberry pi camera."
+                "description":"Captures and serves an image from the raspberry pi camera."
             }
         ],
         "ports":{ // image server served on port 5001
