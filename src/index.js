@@ -1,6 +1,7 @@
 const config = require('../config')
 
 const servers = [] 
+// import servers and push them to the servers array
 servers.push(require('./servers/app'))
 servers.push(require('./servers/stream'))
 

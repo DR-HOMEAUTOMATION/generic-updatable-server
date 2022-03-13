@@ -4,11 +4,14 @@
 
 const config = require('../../config')
 
+const port = config.server_config.ports.app.port
+const host = config.host
+
 const express = require('express'); 
 const app = express(); 
 
-const server = app.listen(config.server_config.ports.app.port,()=>{
-    console.log(`listening on http://localhost:${config.server_config.ports.app.port}`)
+const server = app.listen(port,host,()=>{
+    console.log(`listening on ${host}:${config.server_config.ports.app.port}`)
 })
 
 app.get('/',(req,res)=>{
@@ -30,7 +33,6 @@ app.get('/update',(req,res)=>{
 */
 app.get('/exit',(req,res)=>{
     res.json('closing server now');
-    res.end()
     server.emit('exit')
     server.emit('close')
 })

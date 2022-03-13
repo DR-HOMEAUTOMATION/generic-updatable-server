@@ -1,8 +1,18 @@
+
+const os = require( 'os' );
+const networkInterfaces = os.networkInterfaces();
+const arr = networkInterfaces.wlan0 // for wifi connected devices 
+// const arr = networkInterfaces.Ethernet // for wired connection
+const localIp = arr.find(ip=>ip.family==="IPv4").address
+
 const config = {
+    host:localIp,
     "auto_git_updater_config":{
-        "repository":"https://github.com/DR-HOMEAUTOMATION/generic-updatable-server.git",
-        "backup_path":"C:/backups/test",
-        "start_script_cmd":"start start.bat",
+        "repository":"https://github.com/USERNAME/PROJECT.git",
+        "backup_path":"/home/pi/backups/PROJECT",
+        "backup_path_windows_example":"C:/backups/test",      // remove this
+        "start_script_cmd":"sh start.sh",
+        "start_script_cmd_windows_example":"start start.bat", // remove this
         "branch":"main"
     },
     "server_config":{

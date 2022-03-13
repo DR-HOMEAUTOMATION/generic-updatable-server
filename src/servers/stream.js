@@ -6,6 +6,9 @@
 */
 const config = require('../../config')
 
+const port = config.server_config.ports.stream.port
+const host = config.host
+
 const net = require('net')
 
 /** 
@@ -24,9 +27,11 @@ const server = net.createServer((socket)=>{
     })
     /** 
     * @fires server#update 
+    * @fires server#exit 
     */
     socket.on('data',(data)=>{
-        if(data.toString().endsWith('update')) server.emit('update_key_word'); 
+        if(data.toString().endsWith('update')) server.emit('update'); 
+        if(data.toString().endsWith('exit')) server.emit('exit'); 
     })
     socket.on('error',(err)=>{
         console.log(err)
@@ -36,8 +41,8 @@ const server = net.createServer((socket)=>{
 /** 
 * listen on the specified port 
 */
-server.listen(config.server_config.ports.stream.port,()=>{
-    console.log(`listening on port: ${config.server_config.ports.stream.port}`)
+server.listen(port,host,()=>{
+    console.log(`listening at: ${host}:${port}`)
 })
 /** 
 * exports an object containing the server and an array containing open all sockets
