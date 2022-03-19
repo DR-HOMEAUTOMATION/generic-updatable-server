@@ -1,7 +1,7 @@
 {
   "name": "generic-updatable-server",
   "version": "1.0.0",
-  "description": "A boilerplate express/.net server with built in updating functionality.",
+  "description": "A server capable of cloning down repos and adding them to the startup file",
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",

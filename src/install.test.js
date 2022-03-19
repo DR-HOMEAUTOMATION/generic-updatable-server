@@ -4,12 +4,13 @@ const path = require('path')
 const exp = require('constants')
 
 
-const testPathExists = path.join(__dirname,'/test')
+const testPathExists = 'C:\\Users\\dawso\\workspace\\homeAuto\\generic-updatable-server\\test'
 const testStartupFile = path.join(__dirname,'startup.txt')
-const testWorkingRepo   = 'https://github.com/DR-HOMEAUTOMATION/generic-updatable-server'
+const testWorkingStartupFile = 'C:\\Users\\dawso\\workspace\\homeAuto\\generic-updatable-server\\src\\startup.txt'
+const testWorkingRepo   = 'https://github.com/DR-HOMEAUTOMATION/generic-updatable-server.git'
 const testWorkingBranch = 'server-manager'
 const testFailingBranch = 'random-branch-that-does-not-exist'
-const testFailingRepo   = 'https://github.com/DR-HOMEAUTOMATION/generic/'
+const testFailingRepo   = 'https://github.com/DR-HOMEAUTOMATION/generic.git'
 const testFailingSSHRepoUrl   = 'git@github.com:DR-HOMEAUTOMATION/generic-updatable-server.git'
 const testFailingNonGitUrl   = 'https://www.twitch.tv/moky_dokie'
 describe('sanity check',()=>{
@@ -31,13 +32,13 @@ describe('Bad constructor arg throws proper errors',()=>{
         })    
         test('Install constructor missing application_save_path throws error',()=>{
             expect(()=>new Installer({
-                startup_file:'temp',
+                startup_file:testWorkingStartupFile,
                 default_startup_program:'temp',
             })).toThrow('application_save_path is a required attribute')
         })    
         test('Install constructor missing default_startup_program throws error',()=>{
             expect(()=>new Installer({
-                startup_file:'temp',
+                startup_file:testWorkingStartupFile,
                 application_save_path:'temp',
             })).toThrow('default_startup_program is a required attribute')
         })    
@@ -50,9 +51,9 @@ describe('Bad constructor arg throws proper errors',()=>{
                     fs.rmdirSync(testPathExists)
                 } catch (a) {}
                 expect(()=>new Installer({
-                    startup_file:testStartupFile,
+                    startup_file:testWorkingStartupFile,
                     application_save_path:testPathExists,
-                    default_startup_program:true
+                    default_startup_program:'start.bat'
                 })).toThrow('The specified application save path does not exist')
             })
             test('If path exists return the class instance',()=>{
@@ -62,21 +63,21 @@ describe('Bad constructor arg throws proper errors',()=>{
                     fs.mkdirSync(testPathExists)
                 }
                 expect(new Installer({
-                    startup_file:testStartupFile,
+                    startup_file:testWorkingStartupFile,
                     application_save_path:testPathExists,
-                    default_startup_program:true
+                    default_startup_program:'start.bat'
                 })).toBeDefined()
             })
         })
         describe('Startup file exists',()=>{
             test('Startup file does not exist then throw an error',()=>{
                 try {
-                    fs.unlinkSync(testStartupFile)
-                } catch (e) {}
+                    fs.unlinkSync(testWorkingStartupFile)
+                } catch (e) {console.log('\x1b[31m',`${e}`,'\x1b[0m')}
                 expect(()=>new Installer({
-                    startup_file:testStartupFile,
+                    startup_file:testWorkingStartupFile,
                     application_save_path:testPathExists,
-                    default_startup_program:true
+                    default_startup_program:'start.bat'
                 })).toThrow('The specified startup file does not exist')
             })
             test('Startup file exists then return as normal',()=>{
@@ -84,7 +85,7 @@ describe('Bad constructor arg throws proper errors',()=>{
                 expect(new Installer({
                     startup_file:testStartupFile,
                     application_save_path:testPathExists,
-                    default_startup_program:true
+                    default_startup_program:'start.bat'
                 })).toBeDefined()
             })
         })
@@ -95,7 +96,7 @@ describe('method `installRepo` throws proper errors when repo/branch do not exis
     const workingInstallerInstance = new Installer({
         startup_file:testStartupFile,
         application_save_path:testPathExists,
-        default_startup_program:true
+        default_startup_program:'start.bat'
     })
         test('method works properly when repo and branch exist',()=>{
             workingInstallerInstance.installRepo(testWorkingRepo,testWorkingBranch).then(isValid=>{
@@ -103,20 +104,28 @@ describe('method `installRepo` throws proper errors when repo/branch do not exis
             })
         })
         test('method throws a `repo not found` error when the repo does not exists',()=>{
-            return expect(workingInstallerInstance.installRepo(testFailingRepo,testWorkingBranch)).rejects.toBe(`The specified repository: ${testFailingRepo} does not exist`)
+            return expect(workingInstallerInstance.installRepo(testFailingRepo,testWorkingBranch)).rejects.toBe(`The specified repository: ${testFailingRepo.slice(0,testFailingRepo.length-4)} does not exist. URL: ${testFailingRepo.slice(0,testFailingRepo.length-4)}`)
         })
         test('method throws a `branch not found` error when the branch does not exists',()=>{
-            return expect(workingInstallerInstance.installRepo(testWorkingRepo,testFailingBranch)).rejects.toBe(`The specified branch: ${testFailingBranch} does not exist`)
+            return expect(workingInstallerInstance.installRepo(testWorkingRepo,testFailingBranch)).rejects.toBe(`The specified branch: ${testFailingBranch} does not exist. URL: ${testWorkingRepo.slice(0,testWorkingRepo.length-4)}/tree/${testFailingBranch}`)
         })
         
+})
+
+describe('method `installRepo` throws proper error if the startup program does not exist in the repo',()=>{
+    const workingInstallerInstance = new Installer({
+        startup_file:testStartupFile,
+        application_save_path:testPathExists,
+        default_startup_program:'start.bat'
     })
+})
 
 
-    describe('method `installRepo` throws proper errors when repo/branch are in improper format',()=>{
+describe('method `installRepo` throws proper errors when repo/branch are in improper format',()=>{
         const workingInstallerInstance = new Installer({
             startup_file:testStartupFile,
             application_save_path:testPathExists,
-            default_startup_program:true
+            default_startup_program:'start.bat'
         })
         describe('Invalid repository gets rejected with proper errors',()=>{
             test('SSH git command fails with special error',()=>{
