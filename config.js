@@ -56,7 +56,7 @@ const config = {
         ],
         "ports":{
             "app": {
-                "port":4999,
+                "port":4998,
                 "type":"http",
             },
         },

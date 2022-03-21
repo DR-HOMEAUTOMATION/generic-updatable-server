@@ -4,6 +4,7 @@ const axios = require('axios')
 const simpleGit = require('simple-git/promise')()
 const path = require('path');
 const { resolve } = require('path');
+const { get } = require('express/lib/response');
 /** 
 * @typedef {object} GitInstallerConfig
 * @property {string} default_startup_program the default startup script for each project EX: start.sh
@@ -166,6 +167,27 @@ class GitInstaller{
             }
         })
     }
+
+    /** Run the `start script` in the app directory 
+    *  @todo if there is a startup program run that other wise run an optional start script from the options object
+    *  @todo Use {Stream.fork || Stream.spawn} instead of exec (i believe exec is hogging all of the thread)
+    */
+    startApplication(path,_startScript){
+        let startScript = _startScript||'npm start'
+        return new Promise((resolve,reject)=>{
+            try{
+                const startApp = child_process.exec(startScript,{cwd:path,detached:true},(err,out,stdErr)=>{
+                    console.log('\x1b[32m',`${out}`,'\x1b[0m')
+                    if(err) console.log('\x1b[31m',`${err}`,'\x1b[0m')
+                    if(stdErr) console.log('\x1b[31m',`${stdErr}`,'\x1b[0m')
+                })
+                resolve(true)
+            }catch(error){
+                reject(error)
+            }
+        })
+    }
+
     /** Clones the specified git repository to [config.application_save_path] with the name of [repository_name-branch] 
      *  @param {string} gitRepoUrl a url that leads to a github repository 
      *  @param {string} branch specified branch to clone: defaults to main
@@ -211,6 +233,7 @@ class GitInstaller{
     * @returns {Promise}
     */
     installRepo(gitRepoUrl,_branch,options){
+        console.log('installing repository')
         const branch = _branch || 'main'
         const startup_abs_path = this.getStartupFileAbsolutePath(gitRepoUrl,branch,options)
         return new Promise(async(resolve,reject)=>{
@@ -221,6 +244,7 @@ class GitInstaller{
                 .then(()=>this.cloneRepoToPath(gitRepoUrl,branch))
                 .then(()=>this.instantiateProjectAtPath(this.getProjectAbsolutePath(gitRepoUrl,branch,options?.initializeScript)))
                 .then(()=>this.addStartupScriptToStartupFile(this.config.startup_file,startup_abs_path))
+                .then(()=>this.startApplication(this.getProjectAbsolutePath(gitRepoUrl,branch),'npm start'))
                 .then(()=>{console.log('\x1b[32m',`The repository has been cloned with no errors`,'\x1b[0m'); resolve(true)})
                 .catch(e=>reject(e))
         })
