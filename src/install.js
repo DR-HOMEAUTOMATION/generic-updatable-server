@@ -122,8 +122,8 @@ class GitInstaller{
     }
 
      /** Returns the project name from the gitURL 
-     *  EX: https://github.com/steveukx/git-js.git
-     *  Project name: git-js
+     *  EX: https://github.com/steveukx/git-js.git 
+     *  Project name: git-js 
      * @param {string} gitUrl url to take the project name from 
      * @returns {string} project name
      */
@@ -174,14 +174,38 @@ class GitInstaller{
     */
     startApplication(path,_startScript){
         let startScript = _startScript||'npm start'
+        let outputString = '' // string to resolve/reject with 
         return new Promise((resolve,reject)=>{
             try{
-                const startApp = child_process.exec(startScript,{cwd:path,detached:true},(err,out,stdErr)=>{
-                    console.log('\x1b[32m',`${out}`,'\x1b[0m')
-                    if(err) console.log('\x1b[31m',`${err}`,'\x1b[0m')
-                    if(stdErr) console.log('\x1b[31m',`${stdErr}`,'\x1b[0m')
+                // take the first part of the command and place it as the command, add the rest as args
+                // `npm start`
+                const startedApp = child_process.spawn(startScript,{cwd:path,detached:true,shell:true})
+                
+                startedApp.stdout.on('data',(data)=>{
+                    console.log('\x1b[32m',`${data}`,'\x1b[0m')
+                    outputString.concat(data); 
                 })
-                resolve(true)
+                startedApp.stderr.on('data',(data)=>{
+                    console.log('\x1b[31m',`${data}`,'\x1b[0m')
+                    outputString.concat(data); 
+                })
+                startedApp.on('error',(data)=>{
+                    console.log('\x1b[31m',`${data}`,'\x1b[0m')
+                    outputString.concat(data); 
+                })
+                startedApp.on('close',(code)=>{
+                    console.log('\x1b[31m',`${code}`,'\x1b[0m')
+                    outputString.concat(`The app closed with exit code: ${code}`)
+                    reject(outputString); 
+                })
+                setTimeout(()=>{
+                    resolve(outputString)
+                },1000)
+                // const startApp = child_process.exec(startScript,{cwd:path,detached:true},(err,out,stdErr)=>{
+                //     console.log('\x1b[32m',`${out}`,'\x1b[0m')
+                //     if(err) console.log('\x1b[31m',`${err}`,'\x1b[0m')
+                //     if(stdErr) console.log('\x1b[31m',`${stdErr}`,'\x1b[0m')
+                // })
             }catch(error){
                 reject(error)
             }
@@ -233,20 +257,30 @@ class GitInstaller{
     * @returns {Promise}
     */
     installRepo(gitRepoUrl,_branch,options){
-        console.log('installing repository')
         const branch = _branch || 'main'
+        console.log('\x1b[32m',`Starting installation process now:\nRepo url: ${gitRepoUrl}\nBranch: ${branch}`,'\x1b[0m')
         const startup_abs_path = this.getStartupFileAbsolutePath(gitRepoUrl,branch,options)
+        console.log('\x1b[33m',`${startup_abs_path}`,'\x1b[0m')
         return new Promise(async(resolve,reject)=>{
             this.validateGithubBranch(branch)
                 .then(()=>this.validateGithubUrl(gitRepoUrl))
                 .then(()=>this.validateGithubRepoExists(gitRepoUrl,branch))
                 .then(()=>this.ValidateStartupProgramExists(gitRepoUrl,branch,options))
-                .then(()=>this.cloneRepoToPath(gitRepoUrl,branch))
-                .then(()=>this.instantiateProjectAtPath(this.getProjectAbsolutePath(gitRepoUrl,branch,options?.initializeScript)))
+                .then(()=>{
+                    console.log('\x1b[32m',`Repository exists starting installation now!`,'\x1b[0m')
+                    return this.cloneRepoToPath(gitRepoUrl,branch)
+                })
+                .then(()=>{
+                    console.log('\x1b[32m',`Repository cloned, installing dependencies now!`,'\x1b[0m')
+                    return this.instantiateProjectAtPath(this.getProjectAbsolutePath(gitRepoUrl,branch,options?.initializeScript))
+                })
                 .then(()=>this.addStartupScriptToStartupFile(this.config.startup_file,startup_abs_path))
-                .then(()=>this.startApplication(this.getProjectAbsolutePath(gitRepoUrl,branch),'npm start'))
-                .then(()=>{console.log('\x1b[32m',`The repository has been cloned with no errors`,'\x1b[0m'); resolve(true)})
-                .catch(e=>reject(e))
+                .then(()=>{
+                    console.log('\x1b[32m',`Installation complete! Starting application now!`,'\x1b[0m')
+                    return this.startApplication(this.getProjectAbsolutePath(gitRepoUrl,branch),startup_abs_path)
+                })
+                .then(()=>resolve(`The repository has been cloned with no errors`))
+                .catch(e=>reject('The repository was not cloned successfully: '+JSON.stringify(e)))
         })
     }
 

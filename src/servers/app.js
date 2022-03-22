@@ -32,12 +32,11 @@ app.get('/',(req,res)=>{
 
 app.get('/install',(req,res)=>{
     console.log('installing repository:')
-    console.log(req)
     const {body} = req
     try{
         test.installRepo(body.config.gitUrl,body.config.branch,body.config.options)
             .then((data)=>res.json(data))
-            .catch(error=>res.error(error))
+            .catch(error=>res.json(error))
     }catch(e){
         res.json(e)    
     }

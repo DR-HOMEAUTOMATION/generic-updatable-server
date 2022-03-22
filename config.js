@@ -7,20 +7,14 @@ const localIp = arr.find(ip=>ip.family==="IPv4").address
 
 const config = {
     server_manager_config:{
-        /** 
-        * @todo find startup file path  
-        */
-        startup_file_path:'',
-        application_save_path:'',
-        default_startup_program:'start.bat',
-        // default_startup_program:'start.sh',
+        startup_file_path:'/etc/rc.local',
+        application_save_path:'/home/pi/apps',
+        default_startup_program:'start.sh',
     },
     "auto_git_updater_config":{
         "repository":"https://github.com/DR-HOMEAUTOMATION/generic-updatable-server",
-        // "backup_path":"/home/pi/backups/server_manager",
-        "backup_path":"C:/backups/test/server_manager",      // remove this
-        // "start_script_cmd":"sh start.sh",
-        "start_script_cmd":"start start.bat", // remove this
+        "backup_path":"/home/pi/backups/server_manager",
+        "start_script_cmd":"sh start.sh",
         "branch":"server-manager"
     },
     "server_config":{
@@ -56,7 +50,7 @@ const config = {
         ],
         "ports":{
             "app": {
-                "port":4998,
+                "port":4999,
                 "type":"http",
             },
         },
