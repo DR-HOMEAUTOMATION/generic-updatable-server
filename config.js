@@ -1,8 +1,8 @@
 
 const os = require( 'os' );
 const networkInterfaces = os.networkInterfaces();
-// const arr = networkInterfaces.wlan0 // for wifi connected devices 
-const arr = networkInterfaces.Ethernet // for wired connection
+const arr = networkInterfaces.wlan0 // for wifi connected devices 
+// const arr = networkInterfaces.Ethernet // for wired connection
 const localIp = arr.find(ip=>ip.family==="IPv4").address
 
 const config = {
