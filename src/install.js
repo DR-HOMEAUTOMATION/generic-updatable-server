@@ -275,7 +275,7 @@ class GitInstaller{
                 .then(()=>this.addStartupScriptToStartupFile(this.config.startup_file,startup_abs_path))
                 .then(()=>{
                     console.log('\x1b[32m',`Installation complete! Starting application now!`,'\x1b[0m')
-                    return this.startApplication(this.getProjectAbsolutePath(gitRepoUrl,branch),startup_abs_path)
+                    return this.startApplication(this.getProjectAbsolutePath(gitRepoUrl,branch))
                 })
                 .then(()=>resolve(`The repository has been cloned with no errors`))
                 .catch(e=>reject('The repository was not cloned successfully: '+JSON.stringify(e)))
