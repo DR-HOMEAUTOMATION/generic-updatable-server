@@ -3,8 +3,6 @@ const child_process = require('child_process');
 const axios = require('axios')
 const simpleGit = require('simple-git/promise')()
 const path = require('path');
-const { resolve } = require('path');
-const { get } = require('express/lib/response');
 /** 
 * @typedef {object} GitInstallerConfig
 * @property {string} default_startup_program the default startup script for each project EX: start.sh

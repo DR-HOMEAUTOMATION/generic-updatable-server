@@ -1,7 +1,2 @@
-# generic-updatable-server
-A boilerplate express/.net server with built in updating functionality.
-
-## Usage
-- Edit the config.js file
-- Import all necessary servers to (main) index.js
-- Be sure to fill the `servers` array with each server to ensure that they are closed safely   
+# Raspi server manager
+A server that clones a given git project. Once cloned the server runs an init scrip in the directory of the project, starts the project, and adds the start script to the startup file

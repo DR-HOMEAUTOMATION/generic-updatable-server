@@ -30,7 +30,7 @@ app.get('/',(req,res)=>{
     res.json(config.server_config.routes)
 })
 
-app.get('/install',(req,res)=>{
+app.post('/install',(req,res)=>{
     console.log('installing repository:')
     const {body} = req
     try{
@@ -40,6 +40,12 @@ app.get('/install',(req,res)=>{
     }catch(e){
         res.json(e)    
     }
+})
+
+app.get('/install',(req,res)=>{
+    /** 
+    * @todo Return the current running downloaded servers 
+    */
 })
 
 /** 
