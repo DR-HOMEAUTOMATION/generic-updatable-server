@@ -7,7 +7,7 @@ const localIp = arr.find(ip=>ip.family==="IPv4").address
 
 const config = {
     server_manager_config:{
-        startup_file_path:'/etc/rc.local',
+        startup_file:'/etc/rc.local',
         application_save_path:'/home/pi/apps',
         default_startup_program:'start.sh',
     },
