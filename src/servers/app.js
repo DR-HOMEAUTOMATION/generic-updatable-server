@@ -6,11 +6,7 @@ const config = require('../../config')
 
 const GitInstaller = require('../install')
 
-const test = new GitInstaller({
-    startup_file:'C:\\Users\\dawso\\workspace\\homeAuto\\generic-updatable-server\\src\\startup.txt',
-    application_save_path:'C:\\temp',
-    default_startup_program:'start.bat'
-})
+const gitInstaller = new GitInstaller(config.server_manager_config)
 
 const port = config.server_config.ports.app.port
 const host = config.host
@@ -34,7 +30,7 @@ app.post('/install',(req,res)=>{
     console.log('installing repository:')
     const {body} = req
     try{
-        test.installRepo(body.config.gitUrl,body.config.branch,body.config.options)
+        gitInstaller.installRepo(body.config.gitUrl,body.config.branch,body.config.options)
             .then((data)=>res.json(data))
             .catch(error=>res.json(error))
     }catch(e){
