@@ -228,7 +228,7 @@ class GitInstaller{
         return new Promise((resolve,reject)=>{
             try{
                 /** @todo sh is is not final as we cannot ensure that it will be a shell script and not say a batch file */
-                fs.appendFileSync(startup_file,`sh ${application_startup_script_path} &`)
+                fs.appendFileSync(startup_file,`sh ${application_startup_script_path} & \n`)
                 resolve(true)
             }catch(e){
                 reject(e)
