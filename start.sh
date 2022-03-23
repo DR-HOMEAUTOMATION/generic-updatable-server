@@ -1,3 +1,3 @@
 #!/bin/bash
 echo starting server...
-sudo node "`dirname "$0"`/src/index.js" 
+sudo node "`dirname "$0"`/src/index.js" &> logs.txt

@@ -166,8 +166,8 @@ class GitInstaller{
         })
     }
 
-    /** Run the `start script` in the app directory 
-    *  @todo if there is a startup program run that other wise run an optional start script from the options object
+    /** 
+    * @todo Document this method 
     */
     startApplication(path,_startScript){
         let startScript = _startScript||'npm start'
@@ -218,10 +218,6 @@ class GitInstaller{
     }
 
 
-    /** 
-    * @todo Potentially add npm start type of command to the startup script something like: 
-    *   'x-terminal-emulator --path="<application_path>" --command="node src/index.js"
-    */
     /** add the startup script for the current project to the startup file (linux specific) 
     *  @param {string} startup_file file to append the startup script to 
     *  @param {string} application_startup_script_path the applications startup script (usually a .sh / .bat file) 
@@ -231,24 +227,14 @@ class GitInstaller{
          console.log(startup_file,application_startup_script_path)
         return new Promise((resolve,reject)=>{
             try{
-                const data = fs.readFileSync(startup_file)
-                const fd = fs.openSync(startup_file, 'w+')
-                const insert = Buffer.from(`sh ${application_startup_script_path} & \n`)
-                fs.writeSync(fd, insert, 0, insert.length, 0)
-                fs.writeSync(fd, data, 0, data.length, insert.length)
-                fs.close(fd, (err) => {
-                    if (err) reject(err);
-                });
+                /** @todo sh is is not final as we cannot ensure that it will be a shell script and not say a batch file */
+                fs.appendFileSync(startup_file,`sh ${application_startup_script_path} &`)
                 resolve(true)
             }catch(e){
                 reject(e)
             }
         })
      }
-     
-     /** 
-     * @todo run cloned repo : child_process exec (startScript || npm start)
-     */
     /**     
     * @param {string} gitRepoUrl a url that leads to a github repository 
     * @param {string} branch specified branch to clone: defaults to main
