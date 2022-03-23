@@ -1,3 +1,3 @@
-!#/bin/bash
-echo Starting server ... 
-x-terminal-emulator --command="node src/index.js"
+#!/bin/bash
+echo starting server...
+sudo node "`dirname "$0"`/src/index.js" &>> logs.txt
