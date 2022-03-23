@@ -237,7 +237,7 @@ class GitInstaller{
          console.log(startup_file,application_startup_script_path)
         return new Promise((resolve,reject)=>{
             try{
-                fs.appendFileSync(startup_file,application_startup_script_path)
+                fs.appendFileSync(startup_file,`sh ${application_startup_script_path} &`)
                 resolve(true)
             }catch(e){
                 reject(e)

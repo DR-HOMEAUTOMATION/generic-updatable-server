@@ -1,3 +1,3 @@
-!#/bin/bash
+#!/bin/bash
 echo starting server...
-x-terminal-emulator --command="node src/index.js"
+node "`dirname "$0"`/src/index.js"
