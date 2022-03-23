@@ -168,7 +168,6 @@ class GitInstaller{
 
     /** Run the `start script` in the app directory 
     *  @todo if there is a startup program run that other wise run an optional start script from the options object
-    *  @todo Use {Stream.fork || Stream.spawn} instead of exec (i believe exec is hogging all of the thread)
     */
     startApplication(path,_startScript){
         let startScript = _startScript||'npm start'
@@ -198,12 +197,7 @@ class GitInstaller{
                 })
                 setTimeout(()=>{
                     resolve(outputString)
-                },1000)
-                // const startApp = child_process.exec(startScript,{cwd:path,detached:true},(err,out,stdErr)=>{
-                //     console.log('\x1b[32m',`${out}`,'\x1b[0m')
-                //     if(err) console.log('\x1b[31m',`${err}`,'\x1b[0m')
-                //     if(stdErr) console.log('\x1b[31m',`${stdErr}`,'\x1b[0m')
-                // })
+                },5000)
             }catch(error){
                 reject(error)
             }
@@ -237,7 +231,14 @@ class GitInstaller{
          console.log(startup_file,application_startup_script_path)
         return new Promise((resolve,reject)=>{
             try{
-                fs.appendFileSync(startup_file,`sh ${application_startup_script_path} &`)
+                const data = fs.readFileSync(startup_file)
+                const fd = fs.openSync(startup_file, 'w+')
+                const insert = Buffer.from(`sh ${application_startup_script_path} & \n`)
+                fs.writeSync(fd, insert, 0, insert.length, 0)
+                fs.writeSync(fd, data, 0, data.length, insert.length)
+                fs.close(fd, (err) => {
+                    if (err) reject(err);
+                });
                 resolve(true)
             }catch(e){
                 reject(e)
@@ -275,7 +276,7 @@ class GitInstaller{
                 .then(()=>this.addStartupScriptToStartupFile(this.config.startup_file,startup_abs_path))
                 .then(()=>{
                     console.log('\x1b[32m',`Installation complete! Starting application now!`,'\x1b[0m')
-                    return this.startApplication(this.getProjectAbsolutePath(gitRepoUrl,branch))
+                    return this.startApplication(this.getProjectAbsolutePath(gitRepoUrl,branch),`sh ${startup_abs_path}`)
                 })
                 .then(()=>resolve(`The repository has been cloned with no errors`))
                 .catch(e=>reject('The repository was not cloned successfully: '+JSON.stringify(e)))
