@@ -6,8 +6,8 @@ const config = {
         "branch":"raspi-image-server"
     },
     jpeg_cam_config:{
-        "--width":480,
-        "--height":480,
+        "--width":1920,
+        "--height":1080,
         "-o":"./public/captured_image.jpg",
         "-t":1,
         "--flush":'',
