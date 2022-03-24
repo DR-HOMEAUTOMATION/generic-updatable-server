@@ -9,7 +9,6 @@ const config = {
         "--width":480,
         "--height":480,
         "-o":"./public/captured_image.jpg",
-        "--shutter":5000,
         "-t":20,
         "-n":'',
     },
