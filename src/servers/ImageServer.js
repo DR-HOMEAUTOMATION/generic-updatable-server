@@ -16,7 +16,7 @@ const failedImageCapture = (res,err) =>{
 try{
     const jpegCam = new JpegCam(config.jpeg_cam_config)
     router.get('/image',(req,res)=>{
-        jpegCam.getNewImage((code)=>successImageCapture(res,code),(err)=>failedImageCapture(res,err))
+        jpegCam.getNewImage((code)=>successImageCapture(res,code))
     })
 }catch(err){
     console.log(err)
