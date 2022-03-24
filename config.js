@@ -9,7 +9,8 @@ const config = {
         "--width":480,
         "--height":480,
         "-o":"./public/captured_image.jpg",
-        "-t":20,
+        "-t":1,
+        "--flush":'',
         "-n":'',
     },
     "server_config":{
