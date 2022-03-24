@@ -8,7 +8,7 @@ const config = {
     jpeg_cam_config:{
         "--width":480,
         "--height":480,
-        "-o":"public/captured_image.jpg",
+        "-o":"./public/captured_image.jpg",
         "-t":20,
         "-n":'',
     },
