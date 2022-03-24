@@ -154,7 +154,7 @@ class GitInstaller{
         return new Promise((resolve,reject)=>{
             let initializeScript = _initializeScript || 'npm i'
             try{
-                const install = child_process.exec(initializeScript,{cwd:path,detached:true},(error,out,stdErr)=>{
+                const install = child_process.execSync(initializeScript,{cwd:path,detached:true},(error,out,stdErr)=>{
                     if(error) console.log('\x1b[31m',`${error && error}`,'\x1b[0m')
                     if(stdErr) console.log('\x1b[31m',`${stdErr && stdErr}`,'\x1b[0m')
                     console.log('\x1b[32m',`${out}`,'\x1b[0m')  
