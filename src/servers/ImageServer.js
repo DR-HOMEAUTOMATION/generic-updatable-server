@@ -5,7 +5,7 @@ const router = express.Router();
 const { JpegCam }= require('libcamera-js')
 
 const successImageCapture = (res,code) =>{
-    res.sendFile(`${process.cwd()}/${config.jpeg_cam_config['-o']}`)
+    res.sendFile(config.jpeg_cam_config['-o'])
     console.log(code)
 }
 
