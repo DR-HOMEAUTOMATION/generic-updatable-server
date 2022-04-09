@@ -1,11 +1,11 @@
 const config = require('../../config')
-
+const fs = require('fs')
 const express = require('express')
 const router = express.Router(); 
 const { JpegCam }= require('libcamera-js')
 
 const successImageCapture = (res,code) =>{
-    res.json({data:`${process.cwd()}/${config.jpeg_cam_config['-o']}`})
+    res.json({data:fs.readFileSync(`${process.cwd()}/${config.jpeg_cam_config['-o']}`)})
     console.log(code)
 }
 
