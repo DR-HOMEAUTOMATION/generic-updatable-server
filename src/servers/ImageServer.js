@@ -20,6 +20,8 @@ router.get('/start',(req,res)=>{
     [getImage,exit] = new VidCam().createSegmentedMJPEGVideoStream({'-o':'test.jpeg','-t':'0'})
 })
 
+
+module.exports = router
 // const { JpegCam }= require('libcamera-js')
 
 // const successImageCapture = (res,code) =>{
