@@ -19,6 +19,7 @@ class VidCam{
         args['--segment']=''
         const libCamVid = spawn('libcamera-vid',Object.entries(args).join(',').split(','))
         libCamVid.on('error',errorCB || Function.prototype)
+        libCamVid.on('data',(data)=>console.log(data))
         fs.openSync(args['-o'],'w')
         return[
             ()=>fs.readFileSync(`${process.cwd()}/${args['-o']}`), // [0] = getImg
