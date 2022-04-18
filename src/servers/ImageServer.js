@@ -2,7 +2,7 @@ const config = require('../../config')
 const fs = require('fs')
 const express = require('express')
 const router = express.Router(); 
-const {VidCam} = require('libcamera-js')
+const {VidCam} = require('../../temp/index')
 
 let [getImage,exit] = new VidCam().createSegmentedMJPEGVideoStream({'-o':'test.jpeg','-t':'0'})
 
