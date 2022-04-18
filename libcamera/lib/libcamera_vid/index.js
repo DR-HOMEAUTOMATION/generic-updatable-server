@@ -9,7 +9,9 @@ const fs = require('fs')
 
 class VidCam{
     constructor(args){
-        Object.keys(args).forEach(key=>this[key]=args[key])
+        if(args){
+            Object.keys(args).forEach(key=>this[key]=args[key])
+        }
     }
 
     createSegmentedVideoStream(args,errorCB){
