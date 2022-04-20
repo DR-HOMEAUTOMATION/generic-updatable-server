@@ -6,7 +6,8 @@ const {VidCam} = require('../../libcamera/index')
 
 let [getImage,exit] = new VidCam().createSegmentedMJPEGVideoStream({'-o':'test.jpeg','--framerate':10,'-t':0,'-n':''})
 router.get('/image',(req,res)=>{
-    res.json({data:getImage()})
+    console.log('\x1b[31m',`GETTING IMAGE NOW`,'\x1b[0m')
+    getImage(res)
 })
 
 router.get('/stop',(req,res)=>{

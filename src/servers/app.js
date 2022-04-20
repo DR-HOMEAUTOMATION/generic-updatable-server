@@ -16,7 +16,7 @@ app.get('/',(req,res)=>{
     res.json(config.server_config.routes)
 })
 
-app.get('/image',ImageServer)
+app.use(ImageServer)
 
 /** 
 * @fires app#update 

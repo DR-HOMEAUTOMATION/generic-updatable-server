@@ -17,14 +17,14 @@ class VidCam{
     createSegmentedVideoStream(args,errorCB){
         if(!args['-o']) throw new Error('-o is a required arg')
         args['--segment']=1
-        const libCamVid = spawn('libcamera-vid',Object.entries(args).join(',').split(','))
-        libCamVid.on('error',errorCB || Function.prototype)
-        libCamVid.on('data',(data)=>console.log('\x1b[33m',`data: ${data}`,'\x1b[0m'))
+        this.vid = spawn('libcamera-vid',Object.entries(args).join(',').split(','))
+        this.vid.on('error',errorCB || Function.prototype)
+        this.vid.on('data',(data)=>console.log('\x1b[33m',`data: ${data}`,'\x1b[0m'))
         return[
             (res)=>fs.createReadStream(`${process.cwd()}/${args['-o']}`).pipe(res), // [0] = getImg
             (code,onClosed)=>{
-                libCamVid.on('close',onClosed || Function.prototype)
-                libCamVid.emit('exit',code || 1)
+                this.vid.on('close',onClosed || Function.prototype)
+                this.vid.emit('exit',code || 1)
             }     // [1] = stop recording
         ]
     }
