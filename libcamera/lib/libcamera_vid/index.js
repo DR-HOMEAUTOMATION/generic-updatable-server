@@ -29,7 +29,7 @@ class VidCam{
             // (res)=>fs.createReadStream(`${process.cwd()}/${args['-o']}`).pipe(res), // [0] = getImg
             (code,onClosed)=>{
                 this.vid.on('close',onClosed || Function.prototype)
-                this.vid.emit('exit',code || 1)
+                this.vid.kill(code || 1)
             }     // [1] = stop recording
         ]
     }
