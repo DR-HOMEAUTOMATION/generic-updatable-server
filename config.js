@@ -29,7 +29,11 @@ const config = {
             },
             {
                 "path":"/image",
-                "description":"Captures and serves an image from the raspberry pi camera."
+                "description":"Captures and serves an image from the raspberry pi camera.",
+                "subPaths":{
+                    "/start":"starts the libcamera-vid app",
+                    "/stop":"stops the libcamera-vid app"
+                }
             }
         ],
         "ports":{ // image server served on port 5001
