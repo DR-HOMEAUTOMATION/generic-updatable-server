@@ -23,7 +23,7 @@ class VidCam{
         return[
             (res) => fs.readFile(`${process.cwd()}/${args['-o']}`,(err,data) => {
                 if(err) throw new Error('Can not process image')
-                res.send(data)
+                res.send(Array.from(data))
             }),
             // (res)=>fs.createReadStream(`${process.cwd()}/${args['-o']}`).pipe(res), // [0] = getImg
             (code,onClosed)=>{
