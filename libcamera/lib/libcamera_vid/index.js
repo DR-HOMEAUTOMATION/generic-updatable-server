@@ -16,7 +16,7 @@ class VidCam{
 
     createSegmentedVideoStream(args,errorCB){
         if(!args['-o']) throw new Error('-o is a required arg')
-        args['--segment']=1
+        args['--segment']=50
         this.vid = spawn('libcamera-vid',Object.entries(args)?.join(',')?.split(','))
         this.vid.on('error',errorCB || Function.prototype)
         this.vid.on('data',(data)=>console.log('\x1b[33m',`data: ${data}`,'\x1b[0m'))

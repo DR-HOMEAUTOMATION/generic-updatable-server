@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router(); 
 const {VidCam} = require('../../libcamera/index')
 
-let [getImage,exit] = new VidCam().createSegmentedMJPEGVideoStream({'-o':'test.jpeg','--framerate':10,'-t':50,'-n':''})
+let [getImage,exit] = new VidCam().createSegmentedMJPEGVideoStream({'-o':'test.jpeg','width':256,'height':256,'--framerate':10,'-t':0,'-n':''})
 router.get('/',(req,res)=>{
     console.log('\x1b[31m',`GETTING IMAGE NOW`,'\x1b[0m')
     getImage(res)
